@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -25,6 +27,13 @@ function Login() {
         >
           Login
         </button>
+
+        <p className="mt-4 text-center">
+          Don't have an account?{" "}
+          <Link className="text-blue-600" to="/register">
+            Register
+          </Link>
+        </p>
 
       </div>
 
