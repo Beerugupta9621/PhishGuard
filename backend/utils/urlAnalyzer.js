@@ -2,29 +2,16 @@ function analyzeURL(url) {
 
     let score = 0;
 
-    if (url.includes("@"))
-        score += 25;
+    if (url.includes("@")) score += 20;
+    if (url.includes("-")) score += 10;
+    if (url.length > 60) score += 20;
+    if (url.startsWith("http://")) score += 20;
 
-    if (url.includes("-"))
-        score += 10;
-
-    if (url.length > 75)
-        score += 20;
-
-    if (url.startsWith("http://"))
-        score += 25;
-
-    if (url.split(".").length > 3)
-        score += 20;
-
-    let prediction = "Safe";
-
-    if (score >= 40)
-        prediction = "Phishing";
+    const prediction = score >= 40 ? "Phishing" : "Safe";
 
     return {
-        score,
-        prediction
+        prediction,
+        score
     };
 }
 

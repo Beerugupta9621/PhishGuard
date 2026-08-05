@@ -11,14 +11,31 @@ function Scanner() {
         try {
 
             const response = await api.post("/scan/analyze", {
+                user: "demo-user",
                 url
             });
 
-            setResult(response.data.result);
+            setResult(
+                `${response.data.prediction} (Risk Score: ${response.data.riskScore})`
+            );
 
         } catch (error) {
 
-            alert("Scanning Failed");
+            console.log("Error:", error);
+
+            if (error.response) {
+
+                console.log("Response:", error.response.data);
+
+                alert(error.response.data.message);
+
+            } else {
+
+                console.log(error.message);
+
+                alert(error.message);
+
+            }
 
         }
 
@@ -26,36 +43,34 @@ function Scanner() {
 
     return (
 
-        <div className="p-10">
+        <div className="mt-8">
 
-            <h1 className="text-3xl font-bold mb-6">
-                URL Scanner
-            </h1>
+            <h2 className="text-2xl font-bold mb-4">
+                Scan a URL
+            </h2>
 
             <input
                 type="text"
-                placeholder="Enter URL"
+                placeholder="https://example.com"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                className="border p-3 rounded w-full"
+                className="w-full border p-3 rounded"
             />
 
             <button
                 onClick={scanURL}
-                className="bg-blue-600 text-white mt-4 px-6 py-3 rounded"
+                className="mt-4 bg-blue-600 text-white px-6 py-3 rounded"
             >
                 Scan URL
             </button>
 
-            {result && (
-
-                <h2 className="mt-6 text-2xl">
-
-                    Result : {result}
-
-                </h2>
-
-            )}
+            {
+                result && (
+                    <div className="mt-4 p-4 border rounded bg-gray-100">
+                        {result}
+                    </div>
+                )
+            }
 
         </div>
 

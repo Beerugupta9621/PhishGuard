@@ -1,3 +1,40 @@
+const ScanHistory = require("../models/ScanHistory");
+const analyzeURL = require("../utils/urlAnalyzer");
+
+// Analyze URL
+exports.scanURL = async (req, res) => {
+
+    try {
+
+        const { user, url } = req.body;
+
+        const analysis = analyzeURL(url);
+
+        const scan = await ScanHistory.create({
+            user,
+            url,
+            result: analysis.prediction
+        });
+
+        res.status(200).json({
+            success: true,
+            prediction: analysis.prediction,
+            riskScore: analysis.score,
+            data: scan
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+
+};
+
+// Dashboard
 exports.getDashboard = async (req, res) => {
 
     try {
@@ -21,32 +58,20 @@ exports.getDashboard = async (req, res) => {
             .limit(5);
 
         res.json({
-
             success: true,
-
             statistics: {
-
                 totalScans,
-
                 safeScans,
-
                 phishingScans
-
             },
-
             recentScans
-
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         res.status(500).json({
-
             success: false,
             message: error.message
-
         });
 
     }
