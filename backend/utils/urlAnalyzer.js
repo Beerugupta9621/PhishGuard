@@ -2,12 +2,48 @@ function analyzeURL(url) {
 
     let score = 0;
 
-    if (url.includes("@")) score += 20;
-    if (url.includes("-")) score += 10;
-    if (url.length > 60) score += 20;
-    if (url.startsWith("http://")) score += 20;
+    // HTTP instead of HTTPS
+    if (url.startsWith("http://"))
+        score += 25;
 
-    const prediction = score >= 40 ? "Phishing" : "Safe";
+    // @ symbol
+    if (url.includes("@"))
+        score += 25;
+
+    // Count hyphens
+    if ((url.match(/-/g) || []).length >= 2)
+        score += 20;
+
+    // Long URL
+    if (url.length > 60)
+        score += 20;
+
+    // Suspicious keywords
+    const keywords = [
+        "login",
+        "verify",
+        "paypal",
+        "bank",
+        "secure",
+        "account",
+        "update",
+        "signin",
+        "wallet"
+    ];
+
+    keywords.forEach(word => {
+        if (url.toLowerCase().includes(word))
+            score += 15;
+    });
+
+    // Many dots
+    if ((url.match(/\./g) || []).length > 3)
+        score += 10;
+
+    if (score > 100)
+        score = 100;
+
+    const prediction = score >= 50 ? "Phishing" : "Safe";
 
     return {
         prediction,

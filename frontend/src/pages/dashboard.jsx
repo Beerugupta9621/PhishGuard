@@ -1,6 +1,7 @@
 import History from "./History";
 import Scanner from "./Scanner";
 import Stats from "../components/Stats";
+import PieChart from "../components/PieChart";
 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,7 +11,6 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
-    // Statistics state
     const [statistics, setStatistics] = useState({
         totalScans: 0,
         safeScans: 0,
@@ -31,7 +31,9 @@ function Dashboard() {
 
             setStatistics(response.data.statistics);
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.log(error);
 
@@ -51,7 +53,7 @@ function Dashboard() {
 
         <div className="min-h-screen bg-gray-100">
 
-            <div className="bg-blue-600 text-white p-4 flex justify-between">
+            <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
 
                 <h1 className="text-2xl font-bold">
                     PhishGuard Dashboard
@@ -59,7 +61,7 @@ function Dashboard() {
 
                 <button
                     onClick={logout}
-                    className="bg-red-500 px-4 py-2 rounded"
+                    className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
                 >
                     Logout
                 </button>
@@ -69,6 +71,8 @@ function Dashboard() {
             <div className="p-10">
 
                 <Stats statistics={statistics} />
+
+                <PieChart statistics={statistics} />
 
                 <Scanner />
 
