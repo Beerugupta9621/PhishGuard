@@ -4,6 +4,7 @@ import api from "../services/api";
 function History() {
 
     const [history, setHistory] = useState([]);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
 
@@ -37,6 +38,14 @@ function History() {
                 Recent Scan History
             </h2>
 
+            <input
+                type="text"
+                placeholder="Search URL..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full border p-3 rounded mb-4"
+            />
+
             <table className="w-full border">
 
                 <thead>
@@ -55,25 +64,29 @@ function History() {
 
                     {
 
-                        history.map((item) => (
+                        history
+                            .filter((item) =>
+                                item.url.toLowerCase().includes(search.toLowerCase())
+                            )
+                            .map((item) => (
 
-                            <tr key={item._id}>
+                                <tr key={item._id}>
 
-                                <td className="border p-2">
+                                    <td className="border p-2">
 
-                                    {item.url}
+                                        {item.url}
 
-                                </td>
+                                    </td>
 
-                                <td className="border p-2">
+                                    <td className="border p-2">
 
-                                    {item.result}
+                                        {item.result}
 
-                                </td>
+                                    </td>
 
-                            </tr>
+                                </tr>
 
-                        ))
+                            ))
 
                     }
 
