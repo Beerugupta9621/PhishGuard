@@ -77,3 +77,28 @@ exports.getDashboard = async (req, res) => {
     }
 
 };
+
+// Delete scan
+exports.deleteScan = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        await ScanHistory.findByIdAndDelete(id);
+
+        res.json({
+            success: true,
+            message: "Scan deleted successfully"
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+
+};

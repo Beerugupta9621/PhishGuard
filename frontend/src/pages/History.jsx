@@ -20,9 +20,25 @@ function History() {
 
             setHistory(response.data.recentScans);
 
+        } catch (error) {
+
+            console.log(error);
+
         }
 
-        catch (error) {
+    };
+
+    const deleteScan = async (id) => {
+
+        try {
+
+            await api.delete(`/scan/${id}`);
+
+            setHistory(
+                history.filter((item) => item._id !== id)
+            );
+
+        } catch (error) {
 
             console.log(error);
 
@@ -52,9 +68,17 @@ function History() {
 
                     <tr className="bg-gray-200">
 
-                        <th className="border p-2">URL</th>
+                        <th className="border p-2">
+                            URL
+                        </th>
 
-                        <th className="border p-2">Result</th>
+                        <th className="border p-2">
+                            Result
+                        </th>
+
+                        <th className="border p-2">
+                            Action
+                        </th>
 
                     </tr>
 
@@ -63,31 +87,38 @@ function History() {
                 <tbody>
 
                     {
-
                         history
                             .filter((item) =>
-                                item.url.toLowerCase().includes(search.toLowerCase())
+                                item.url
+                                    .toLowerCase()
+                                    .includes(search.toLowerCase())
                             )
                             .map((item) => (
 
                                 <tr key={item._id}>
 
                                     <td className="border p-2">
-
                                         {item.url}
+                                    </td>
 
+                                    <td className="border p-2">
+                                        {item.result}
                                     </td>
 
                                     <td className="border p-2">
 
-                                        {item.result}
+                                        <button
+                                            onClick={() => deleteScan(item._id)}
+                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                        >
+                                            Delete
+                                        </button>
 
                                     </td>
 
                                 </tr>
 
                             ))
-
                     }
 
                 </tbody>
